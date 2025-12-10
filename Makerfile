@@ -1,0 +1,33 @@
+# Makefile minimal pour tester Jenkins SEED
+
+# Variables
+CC      = gcc
+CFLAGS  = -Wall -Wextra -Werror
+SRC     = main.c
+OBJ     = $(SRC:.c=.o)
+NAME    = my_program
+
+# Règle par défaut
+all: $(NAME)
+
+$(NAME): $(OBJ)
+    $(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+
+%.o: %.c
+    $(CC) $(CFLAGS) -c $< -o $@
+
+# Nettoyage des fichiers objets
+clean:
+    rm -f $(OBJ)
+
+# Nettoyage complet (objets + binaire)
+fclean: clean
+    rm -f $(NAME)
+
+# Recompilation complète
+re: fclean all
+
+# Lancement des tests
+tests_run: $(NAME)
+    @echo "Running tests..."
+    @./$(NAME) || true
